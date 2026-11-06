@@ -1,6 +1,6 @@
 // Service worker офлайн-версии: кеширует приложение и движок Python
-const CACHE = 'ml90-ab1790d59c50';
-const LOCAL = ["./", "index.html", "worker.js", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
+const CACHE = 'ml90-31908fa1a627';
+const LOCAL = ["./", "index.html", "worker.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 const CDN = ["https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/pyodide.js", "https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/pyodide.asm.js", "https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/pyodide.asm.wasm", "https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/python_stdlib.zip", "https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/pyodide-lock.json", "https://cdn.jsdelivr.net/npm/alasql@4.6.0/dist/alasql.min.js"];
 const ALL = LOCAL.concat(CDN);
 async function broadcast(msg) { for (const c of await self.clients.matchAll({ includeUncontrolled: true })) c.postMessage(msg); }
