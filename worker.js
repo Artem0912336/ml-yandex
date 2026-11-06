@@ -5,8 +5,8 @@ async function init(prefer, harnessFromPage) {
   const errors = [];
   if (prefer !== 'skulpt') {
     try {
-      importScripts("https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/pyodide.js");
-      const py = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/" });
+      importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js");
+      const py = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/" });
       py.runPython(HARNESS || harnessFromPage);
       runFn = py.globals.get('__ml90_run');
       mode = 'pyodide';

@@ -27042,7 +27042,7 @@ ${O7.theory.match(/<p>Ловите конкретные исключения[\s\
 // Движок 1: Pyodide (CPython в WebAssembly). Движок 2 (запасной): Skulpt (интерпретатор на JS).
 // Код пользователя никогда не выполняется в основном потоке страницы.
 (function (C) {
-  const PYO = 'https://cdn.jsdelivr.net/npm/pyodide@0.26.4/full/';
+  const PYO = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/';
   const SK = ['https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js', 'https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js'];
   const workerSource = (harness) => `
 let mode = null, runFn = null;
