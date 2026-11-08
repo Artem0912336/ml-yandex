@@ -27042,7 +27042,8 @@ ${O7.theory.match(/<p>Ловите конкретные исключения[\s\
 // Движок 1: Pyodide (CPython в WebAssembly). Движок 2 (запасной): Skulpt (интерпретатор на JS).
 // Код пользователя никогда не выполняется в основном потоке страницы.
 (function (C) {
-  const PYO = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/';
+  // npm-путь: песочница артефакта claude.ai разрешает скрипты с cdn.jsdelivr.net только по путям /npm/; в пакете npm файлы лежат в корне
+  const PYO = 'https://cdn.jsdelivr.net/npm/pyodide@0.26.4/';
   const SK = ['https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js', 'https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js'];
   const workerSource = (harness) => `
 let mode = null, runFn = null;
@@ -27052,7 +27053,8 @@ async function init(prefer, harnessFromPage) {
   if (prefer !== 'skulpt') {
     try {
       importScripts(${JSON.stringify(PYO + 'pyodide.js')});
-      const py = await loadPyodide({ indexURL: ${JSON.stringify(PYO)} });
+      // если Python не загрузился за 75 с (медленная сеть, запрет WebAssembly) — не ждать дальше, а перейти на запасной движок
+      const py = await Promise.race([loadPyodide({ indexURL: ${JSON.stringify(PYO)} }), new Promise((_, rej) => setTimeout(() => rej(new Error('загрузка дольше 75 с')), 75000))]);
       py.runPython(HARNESS || harnessFromPage);
       runFn = py.globals.get('__ml90_run');
       mode = 'pyodide';
@@ -27122,7 +27124,7 @@ self.onmessage = async (ev) => {
       const w = C.WORKER_URL ? new Worker(C.WORKER_URL) : new Worker(URL.createObjectURL(new Blob([workerSource(C.PY_HARNESS)], { type: 'text/javascript' })));
       this.worker = w;
       this.ready = new Promise((resolve) => {
-        const timer = setTimeout(() => { this.status = 'failed'; this.error = 'Среда Python не загрузилась за 90 секунд. Проверьте подключение к интернету.'; this.emit(); resolve(false); }, 90000);
+        const timer = setTimeout(() => { this.status = 'failed'; this.error = 'Среда Python не загрузилась за 2 минуты. Проверьте подключение к интернету.'; this.emit(); resolve(false); }, 120000);
         w.onmessage = (e) => {
           const m = e.data;
           if (m.type === 'ready') { clearTimeout(timer); this.status = 'ready'; this.info = m.info; this.emit(); resolve(true); }

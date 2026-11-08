@@ -6,7 +6,8 @@ async function init(prefer, harnessFromPage) {
   if (prefer !== 'skulpt') {
     try {
       importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js");
-      const py = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/" });
+      // если Python не загрузился за 75 с (медленная сеть, запрет WebAssembly) — не ждать дальше, а перейти на запасной движок
+      const py = await Promise.race([loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/" }), new Promise((_, rej) => setTimeout(() => rej(new Error('загрузка дольше 75 с')), 75000))]);
       py.runPython(HARNESS || harnessFromPage);
       runFn = py.globals.get('__ml90_run');
       mode = 'pyodide';
