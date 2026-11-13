@@ -1,5 +1,5 @@
 // Service worker офлайн-версии: кеширует приложение и движок Python
-const CACHE = 'ml90-618cfb61cf2b';
+const CACHE = 'ml90-c5cc31a4e1b3';
 const LOCAL = ["./", "index.html", "worker.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 const CDN = ["https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js", "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.asm.js", "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.asm.wasm", "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/python_stdlib.zip", "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide-lock.json", "https://cdn.jsdelivr.net/npm/alasql@4.6.0/dist/alasql.min.js"];
 const ALL = LOCAL.concat(CDN);
